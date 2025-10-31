@@ -7,7 +7,7 @@ const fs = require('fs');
 const Database = require('./database');
 
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 const CORRECT_PASSWORD = 'chevy2488$';
 
 // Configure multer for file uploads
