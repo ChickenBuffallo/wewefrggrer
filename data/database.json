@@ -1,0 +1,24 @@
+{
+  "cases": [
+    {
+      "id": "mhfcrstynj69enx0yhm",
+      "caseNumber": "1",
+      "title": "Mason Reimers",
+      "status": "open",
+      "priority": "normal",
+      "officer": "Isaac Stotler",
+      "location": "Nebraska",
+      "incidentDate": "2025-10-31T00:00",
+      "description": "",
+      "notes": "",
+      "createdAt": "2025-10-31T21:15:54.934Z",
+      "updatedAt": "2025-10-31T21:15:54.934Z"
+    }
+  ],
+  "evidence": [],
+  "suspects": [],
+  "witnesses": [],
+  "timeline": [],
+  "documents": [],
+  "lastUpdated": "2025-10-31T21:15:54.934Z"
+}
