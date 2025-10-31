@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Password Protection Screen -->
+    <div id="passwordScreen" class="password-screen">
+        <div class="password-container">
+            <div class="password-logo">
+                <h1>🔒 SECURE ACCESS</h1>
+            </div>
+            <form id="passwordForm" class="password-form">
+                <input 
+                    type="password" 
+                    id="passwordInput" 
+                    placeholder="Enter Access Code" 
+                    autocomplete="off"
+                    required
+                >
+                <button type="submit">Authenticate</button>
+                <div id="passwordError" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application (Hidden until authenticated) -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>🔍 Investigation Database</h1>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+                <button class="nav-btn" data-page="cases">Cases</button>
+                <button class="nav-btn" data-page="evidence">Evidence</button>
+                <button class="nav-btn" data-page="suspects">Suspects</button>
+                <button class="nav-btn" data-page="witnesses">Witnesses</button>
+                <button class="nav-btn" data-page="vehicles">Vehicles</button>
+                <button class="nav-btn" data-page="timeline">Timeline</button>
+                <button class="nav-btn" data-page="documents">Documents</button>
+                <button class="nav-btn" data-page="search">Search</button>
+                <button class="nav-btn" data-page="osint">OSINT Tools</button>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </nav>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page active">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Cases</h3>
+                    <p id="statTotalCases">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Cases</h3>
+                    <p id="statActiveCases">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Evidence Items</h3>
+                    <p id="statEvidence">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Persons of Interest</h3>
+                    <p id="statSuspects">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Witnesses</h3>
+                    <p id="statWitnesses">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Closed Cases</h3>
+                    <p id="statClosedCases">0</p>
+                </div>
+            </div>
+            <div class="dashboard-section">
+                <h3>Recent Activity</h3>
+                <div id="recentActivity" class="activity-list"></div>
+            </div>
+            <div class="dashboard-section">
+                <h3>Priority Cases</h3>
+                <div id="priorityCases" class="cases-list"></div>
+            </div>
+        </div>
+
+        <!-- Cases Page -->
+        <div id="casesPage" class="page">
+            <div class="page-header">
+                <h2>Case Management</h2>
+                <button class="btn btn-primary" id="newCaseBtn">+ New Case</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="caseSearch" placeholder="Search cases..." class="search-input">
+                <select id="caseStatusFilter" class="filter-select">
+                    <option value="all">All Status</option>
+                    <option value="open">Open</option>
+                    <option value="investigating">Investigating</option>
+                    <option value="pending">Pending</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+            <div id="casesList" class="items-list"></div>
+        </div>
+
+        <!-- Evidence Page -->
+        <div id="evidencePage" class="page">
+            <div class="page-header">
+                <h2>Evidence Management</h2>
+                <button class="btn btn-primary" id="newEvidenceBtn">+ New Evidence</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="evidenceSearch" placeholder="Search evidence..." class="search-input">
+                <select id="evidenceCaseFilter" class="filter-select">
+                    <option value="all">All Cases</option>
+                </select>
+            </div>
+            <div id="evidenceList" class="items-list"></div>
+        </div>
+
+        <!-- Suspects Page -->
+        <div id="suspectsPage" class="page">
+            <div class="page-header">
+                <h2>Persons of Interest / Suspects</h2>
+                <button class="btn btn-primary" id="newSuspectBtn">+ New Person</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="suspectSearch" placeholder="Search persons..." class="search-input">
+            </div>
+            <div id="suspectsList" class="items-list"></div>
+        </div>
+
+        <!-- Witnesses Page -->
+        <div id="witnessesPage" class="page">
+            <div class="page-header">
+                <h2>Witnesses</h2>
+                <button class="btn btn-primary" id="newWitnessBtn">+ New Witness</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="witnessSearch" placeholder="Search witnesses..." class="search-input">
+            </div>
+            <div id="witnessesList" class="items-list"></div>
+        </div>
+
+        <!-- Timeline Page -->
+        <div id="timelinePage" class="page">
+            <div class="page-header">
+                <h2>Case Timeline / Chronology</h2>
+                <button class="btn btn-primary" id="newTimelineEventBtn">+ New Event</button>
+            </div>
+            <div class="filters">
+                <select id="timelineCaseFilter" class="filter-select">
+                    <option value="all">All Cases</option>
+                </select>
+            </div>
+            <div id="timelineList" class="timeline-container"></div>
+        </div>
+
+        <!-- Documents Page -->
+        <div id="documentsPage" class="page">
+            <div class="page-header">
+                <h2>Documents & Notes</h2>
+                <button class="btn btn-primary" id="newDocumentBtn">+ New Document</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="documentSearch" placeholder="Search documents..." class="search-input">
+                <select id="documentCaseFilter" class="filter-select">
+                    <option value="all">All Cases</option>
+                </select>
+            </div>
+            <div id="documentsList" class="items-list"></div>
+        </div>
+
+        <!-- Vehicles Page -->
+        <div id="vehiclesPage" class="page">
+            <div class="page-header">
+                <h2>Vehicle Database</h2>
+                <button class="btn btn-primary" id="newVehicleBtn">+ New Vehicle</button>
+            </div>
+            <div class="filters">
+                <input type="text" id="vehicleSearch" placeholder="Search vehicles (plate, VIN, make, model)..." class="search-input">
+                <select id="vehicleStatusFilter" class="filter-select">
+                    <option value="all">All Status</option>
+                    <option value="registered">Registered</option>
+                    <option value="stolen">Stolen</option>
+                    <option value="abandoned">Abandoned</option>
+                    <option value="impounded">Impounded</option>
+                </select>
+            </div>
+            <div id="vehiclesList" class="items-list"></div>
+        </div>
+
+        <!-- Search Page -->
+        <div id="searchPage" class="page">
+            <div class="page-header">
+                <h2>Global Search</h2>
+            </div>
+            <div class="search-container">
+                <input type="text" id="globalSearchInput" placeholder="Search across all records..." class="search-input-large">
+                <button class="btn btn-primary" id="executeSearchBtn">Search</button>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
+        <!-- OSINT Tools Page -->
+        <div id="osintPage" class="page">
+            <div class="page-header">
+                <h2>OSINT Investigation Tools</h2>
+            </div>
+            <div class="osint-panel">
+                <h4>Social Media Lookup</h4>
+                <div class="form-group">
+                    <label>Username / Handle</label>
+                    <input type="text" id="osintUsername" placeholder="Enter username...">
+                    <button class="btn btn-primary" style="margin-top: 0.5rem;" onclick="performOSINTLookup('username')">Search</button>
+                </div>
+            </div>
+            <div class="osint-panel">
+                <h4>Phone Number Lookup</h4>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="osintPhone" placeholder="(555) 123-4567">
+                    <button class="btn btn-primary" style="margin-top: 0.5rem;" onclick="performOSINTLookup('phone')">Search</button>
+                </div>
+            </div>
+            <div class="osint-panel">
+                <h4>Email Address Lookup</h4>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="osintEmail" placeholder="user@example.com">
+                    <button class="btn btn-primary" style="margin-top: 0.5rem;" onclick="performOSINTLookup('email')">Search</button>
+                </div>
+            </div>
+            <div class="osint-panel">
+                <h4>IP Address Lookup</h4>
+                <div class="form-group">
+                    <label>IP Address</label>
+                    <input type="text" id="osintIP" placeholder="192.168.1.1">
+                    <button class="btn btn-primary" style="margin-top: 0.5rem;" onclick="performOSINTLookup('ip')">Search</button>
+                </div>
+            </div>
+            <div class="osint-panel">
+                <h4>License Plate Lookup</h4>
+                <div class="form-group">
+                    <label>License Plate</label>
+                    <input type="text" id="osintPlate" placeholder="ABC-1234">
+                    <button class="btn btn-primary" style="margin-top: 0.5rem;" onclick="performOSINTLookup('plate')">Search Database</button>
+                </div>
+            </div>
+            <div id="osintResults" class="osint-panel" style="display: none; margin-top: 2rem;">
+                <h4>Search Results</h4>
+                <div id="osintResultsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Forms -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Lightbox for Images -->
+    <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img id="lightboxImage" src="" alt="">
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
